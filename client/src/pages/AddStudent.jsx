@@ -1,62 +1,743 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
+
+import {
+  ArrowLeft,
+  Bell,
+  Upload,
+  Shield,
+  GraduationCap,
+  Phone,
+  User,
+  MapPin,
+} from "lucide-react";
+
+import {
+  useNavigate,
+} from "react-router-dom";
+
 import { createStudent } from "../services/studentService";
 
 const AddStudent = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    course: "",
-    age: "",
-  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await createStudent(form);
-    alert("Student Added");
-  };
+  const navigate =
+    useNavigate();
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [form, setForm] =
+    useState({
+      fullName: "",
+      dateOfBirth: "",
+      gender: "",
+      rollNumber: "",
+      admissionNumber: "",
+      admissionYear: "",
+
+      grade: "",
+      section: "",
+
+      parentName: "",
+      relation: "",
+      parentPhone: "",
+      alternativePhone: "",
+      parentEmail: "",
+
+      address: "",
+
+      image:
+        "https://i.pravatar.cc/300",
+    });
+
+  const handleSubmit =
+    async (e) => {
+
+      e.preventDefault();
+
+      try {
+
+        setLoading(true);
+
+        await createStudent(
+          form
+        );
+
+        alert(
+          "Student Added Successfully"
+        );
+
+        navigate(
+          "/students"
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+        alert(
+          "Error Adding Student"
+        );
+
+      } finally {
+
+        setLoading(false);
+      }
+    };
 
   return (
-    <>
-      <Navbar />
+    <div className="min-h-screen bg-[#0B1120] flex justify-center p-3 md:p-5">
 
-      <form
-        onSubmit={handleSubmit}
-        className="p-10 flex flex-col gap-4 max-w-md"
-      >
-        <input
-          type="text"
-          placeholder="Name"
-          className="border p-2"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+      <div className="w-full max-w-[1250px] bg-white rounded-[30px] overflow-hidden border-[3px] border-[#635BFF]">
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-2"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+        {/* Header */}
+        <div className="flex justify-between items-center px-5 md:px-10 py-5 border-b">
 
-        <input
-          type="text"
-          placeholder="Course"
-          className="border p-2"
-          onChange={(e) => setForm({ ...form, course: e.target.value })}
-        />
+          <div className="flex items-center gap-4">
 
-        <input
-          type="number"
-          placeholder="Age"
-          className="border p-2"
-          onChange={(e) => setForm({ ...form, age: e.target.value })}
-        />
+            <button
+              onClick={() =>
+                navigate(-1)
+              }
+              className="w-11 h-11 rounded-full bg-gray-100 flex justify-center items-center hover:bg-gray-200 transition"
+            >
 
-        <button className="bg-blue-600 text-white p-2">
-          Add Student
-        </button>
-      </form>
-    </>
+              <ArrowLeft
+                size={18}
+              />
+            </button>
+
+            <div>
+
+              <h1 className="text-2xl md:text-3xl font-black text-blue-600">
+                Add Student
+              </h1>
+
+              <p className="text-sm text-gray-500 mt-1">
+                Register new student profile
+              </p>
+            </div>
+          </div>
+
+          <div className="w-11 h-11 rounded-full bg-gray-100 flex justify-center items-center">
+
+            <Bell
+              size={18}
+              className="text-gray-600"
+            />
+          </div>
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={
+            handleSubmit
+          }
+          className="p-5 md:p-10"
+        >
+
+          <div className="bg-white border rounded-[35px] p-6 md:p-10 shadow-sm">
+
+            {/* Upload */}
+            <div className="flex flex-col items-center">
+
+              <div className="relative">
+
+                <img
+                  src={
+                    form.image
+                  }
+                  alt=""
+                  className="w-32 h-32 rounded-full object-cover border-[5px] border-blue-500 shadow-lg"
+                />
+
+                <button
+                  type="button"
+                  className="absolute bottom-0 right-0 bg-blue-600 text-white p-3 rounded-full"
+                >
+
+                  <Upload
+                    size={18}
+                  />
+                </button>
+              </div>
+
+              <h1 className="text-xl font-bold mt-5">
+                Student Photo
+              </h1>
+
+              <p className="text-gray-500 text-sm mt-1">
+                Upload profile image
+              </p>
+            </div>
+
+            {/* Personal */}
+            <div className="mt-14">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-12 h-12 rounded-2xl bg-blue-100 flex justify-center items-center">
+
+                  <User className="text-blue-600" />
+                </div>
+
+                <div>
+
+                  <h1 className="text-2xl font-black">
+                    Personal Information
+                  </h1>
+
+                  <p className="text-gray-500 text-sm mt-1">
+                    Student personal details
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+
+                {/* Name */}
+                <div className="md:col-span-2">
+
+                  <label className="font-semibold text-sm">
+                    Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.fullName
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        fullName:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Enter Full Name"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* DOB */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Date Of Birth
+                  </label>
+
+                  <input
+                    type="date"
+                    required
+                    value={
+                      form.dateOfBirth
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        dateOfBirth:
+                          e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Gender */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Gender
+                  </label>
+
+                  <select
+                    required
+                    value={
+                      form.gender
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        gender:
+                          e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  >
+
+                    <option value="">
+                      Select Gender
+                    </option>
+
+                    <option>
+                      Male
+                    </option>
+
+                    <option>
+                      Female
+                    </option>
+
+                    <option>
+                      Other
+                    </option>
+                  </select>
+                </div>
+
+                {/* Roll */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Roll Number
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.rollNumber
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        rollNumber:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Enter Roll Number"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Admission */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Admission Number
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.admissionNumber
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        admissionNumber:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Admission Number"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Academic */}
+            <div className="mt-14 border-t pt-10">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-12 h-12 rounded-2xl bg-indigo-100 flex justify-center items-center">
+
+                  <GraduationCap className="text-indigo-600" />
+                </div>
+
+                <div>
+
+                  <h1 className="text-2xl font-black">
+                    Academic Information
+                  </h1>
+
+                  <p className="text-gray-500 text-sm mt-1">
+                    Class and admission details
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+
+                {/* Grade */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Grade / Class
+                  </label>
+
+                  <select
+                    required
+                    value={
+                      form.grade
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        grade:
+                          e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  >
+
+                    <option value="">
+                      Select Grade
+                    </option>
+
+                    {[
+                      1,2,3,4,5,6,
+                      7,8,9,10,11,12,
+                    ].map(
+                      (
+                        item
+                      ) => (
+                        <option
+                          key={
+                            item
+                          }
+                        >
+                          Grade {item}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+
+                {/* Section */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Section
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.section
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        section:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Section A"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Year */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Admission Year
+                  </label>
+
+                  <select
+                    required
+                    value={
+                      form.admissionYear
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        admissionYear:
+                          e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  >
+
+                    <option value="">
+                      Select Year
+                    </option>
+
+                    {[
+                      2022,
+                      2023,
+                      2024,
+                      2025,
+                      2026,
+                    ].map(
+                      (
+                        year
+                      ) => (
+                        <option
+                          key={
+                            year
+                          }
+                        >
+                          {year}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Parent */}
+            <div className="mt-14 border-t pt-10">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-12 h-12 rounded-2xl bg-green-100 flex justify-center items-center">
+
+                  <Phone className="text-green-600" />
+                </div>
+
+                <div>
+
+                  <h1 className="text-2xl font-black">
+                    Parent Information
+                  </h1>
+
+                  <p className="text-gray-500 text-sm mt-1">
+                    Parent and guardian details
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+
+                {/* Parent Name */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Parent Name
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.parentName
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        parentName:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="Parent Name"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Relation */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Relation
+                  </label>
+
+                  <select
+                    required
+                    value={
+                      form.relation
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        relation:
+                          e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  >
+
+                    <option value="">
+                      Select Relation
+                    </option>
+
+                    <option>
+                      Father
+                    </option>
+
+                    <option>
+                      Mother
+                    </option>
+
+                    <option>
+                      Guardian
+                    </option>
+                  </select>
+                </div>
+
+                {/* Parent Phone */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Parent Phone
+                  </label>
+
+                  <input
+                    type="text"
+                    required
+                    value={
+                      form.parentPhone
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        parentPhone:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="+91 9876543210"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Alternative */}
+                <div>
+
+                  <label className="font-semibold text-sm">
+                    Alternative Phone
+                  </label>
+
+                  <input
+                    type="text"
+                    value={
+                      form.alternativePhone
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        alternativePhone:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="+91 9876543210"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="md:col-span-2">
+
+                  <label className="font-semibold text-sm">
+                    Parent Email
+                  </label>
+
+                  <input
+                    type="email"
+                    value={
+                      form.parentEmail
+                    }
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        parentEmail:
+                          e.target.value,
+                      })
+                    }
+                    placeholder="parent@gmail.com"
+                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Address */}
+            <div className="mt-14 border-t pt-10">
+
+              <div className="flex items-center gap-3">
+
+                <div className="w-12 h-12 rounded-2xl bg-orange-100 flex justify-center items-center">
+
+                  <MapPin className="text-orange-600" />
+                </div>
+
+                <div>
+
+                  <h1 className="text-2xl font-black">
+                    Address Information
+                  </h1>
+
+                  <p className="text-gray-500 text-sm mt-1">
+                    Residential address details
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8">
+
+                <textarea
+                  rows="5"
+                  required
+                  value={
+                    form.address
+                  }
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      address:
+                        e.target.value,
+                    })
+                  }
+                  placeholder="Residential Address"
+                  className="w-full border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+                ></textarea>
+              </div>
+            </div>
+
+            {/* Privacy */}
+            <div className="mt-10 bg-blue-50 border border-blue-200 rounded-3xl p-6 flex gap-4">
+
+              <Shield className="text-blue-600" />
+
+              <div>
+
+                <h1 className="font-bold text-blue-700">
+                  Student Data Protection
+                </h1>
+
+                <p className="text-sm text-blue-600 mt-2 leading-7">
+                  All student information
+                  is securely stored and
+                  only accessible by
+                  authorized administration.
+                </p>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end gap-4 mt-12">
+
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(
+                    "/students"
+                  )
+                }
+                className="px-7 py-4 rounded-2xl border font-semibold hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={
+                  loading
+                }
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold transition"
+              >
+
+                {loading
+                  ? "Saving..."
+                  : "Save Student"}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
