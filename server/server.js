@@ -14,19 +14,12 @@ dns.setDefaultResultOrder(
 dotenv.config();
 
 const app = express();
-
-
-// CORS
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://school-management-system-gold-zeta.vercel.app",
-    ],
+    origin: "*",
     credentials: true,
   })
 );
-
 
 // Body Parser
 app.use(express.json());
