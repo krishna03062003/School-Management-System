@@ -172,33 +172,56 @@ export const getStudent =
 
 
 // Update Student
-export const updateStudent =
+export const addStudent =
   async (req, res) => {
 
     try {
-const student =
-  await Student.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      returnDocument: "after",
-    }
-  );
-      if (!student) {
+
+      const existingRoll =
+        await Student.findOne({
+          rollNumber:
+            req.body.rollNumber,
+        });
+
+      if (existingRoll) {
 
         return res
-          .status(404)
+          .status(400)
           .json({
             success: false,
             message:
-              "Student Not Found",
+              "Roll Number already exists",
           });
       }
 
-      res.status(200).json({
+      const existingAdmission =
+        await Student.findOne({
+          admissionNumber:
+            req.body.admissionNumber,
+        });
+
+      if (
+        existingAdmission
+      ) {
+
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Admission Number already exists",
+          });
+      }
+
+      const student =
+        await Student.create(
+          req.body
+        );
+
+      res.status(201).json({
         success: true,
         message:
-          "Student Updated Successfully",
+          "Student Added Successfully",
         student,
       });
 
@@ -206,12 +229,12 @@ const student =
 
       res.status(500).json({
         success: false,
+
         message:
           error.message,
       });
     }
   };
-
 
 // Delete Student
 export const deleteStudent =

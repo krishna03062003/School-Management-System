@@ -49,6 +49,17 @@ const AddStudent = () => {
         "https://i.pravatar.cc/300",
     });
 
+  const handleChange = (
+    e
+  ) => {
+
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.value,
+    });
+  };
+
   const handleSubmit =
     async (e) => {
 
@@ -72,10 +83,10 @@ const AddStudent = () => {
 
       } catch (error) {
 
-        console.log(error);
-
         alert(
-          "Error Adding Student"
+          error.response?.data
+            ?.message ||
+            "Something went wrong"
         );
 
       } finally {
@@ -170,7 +181,7 @@ const AddStudent = () => {
               </p>
             </div>
 
-            {/* Personal */}
+            {/* Personal Information */}
             <div className="mt-14">
 
               <div className="flex items-center gap-3">
@@ -194,7 +205,6 @@ const AddStudent = () => {
 
               <div className="grid md:grid-cols-2 gap-6 mt-8">
 
-                {/* Name */}
                 <div className="md:col-span-2">
 
                   <label className="font-semibold text-sm">
@@ -203,23 +213,19 @@ const AddStudent = () => {
 
                   <input
                     type="text"
+                    name="fullName"
                     required
                     value={
                       form.fullName
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        fullName:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     placeholder="Enter Full Name"
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   />
                 </div>
 
-                {/* DOB */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -228,22 +234,18 @@ const AddStudent = () => {
 
                   <input
                     type="date"
+                    name="dateOfBirth"
                     required
                     value={
                       form.dateOfBirth
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        dateOfBirth:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   />
                 </div>
 
-                {/* Gender */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -251,16 +253,13 @@ const AddStudent = () => {
                   </label>
 
                   <select
+                    name="gender"
                     required
                     value={
                       form.gender
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        gender:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   >
@@ -283,7 +282,6 @@ const AddStudent = () => {
                   </select>
                 </div>
 
-                {/* Roll */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -292,23 +290,19 @@ const AddStudent = () => {
 
                   <input
                     type="text"
+                    name="rollNumber"
                     required
                     value={
                       form.rollNumber
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        rollNumber:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     placeholder="Enter Roll Number"
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   />
                 </div>
 
-                {/* Admission */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -317,16 +311,13 @@ const AddStudent = () => {
 
                   <input
                     type="text"
+                    name="admissionNumber"
                     required
                     value={
                       form.admissionNumber
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        admissionNumber:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     placeholder="Admission Number"
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
@@ -350,33 +341,25 @@ const AddStudent = () => {
                   <h1 className="text-2xl font-black">
                     Academic Information
                   </h1>
-
-                  <p className="text-gray-500 text-sm mt-1">
-                    Class and admission details
-                  </p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-3 gap-6 mt-8">
 
-                {/* Grade */}
                 <div>
 
                   <label className="font-semibold text-sm">
-                    Grade / Class
+                    Grade
                   </label>
 
                   <select
+                    name="grade"
                     required
                     value={
                       form.grade
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        grade:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   >
@@ -385,10 +368,7 @@ const AddStudent = () => {
                       Select Grade
                     </option>
 
-                    {[
-                      1,2,3,4,5,6,
-                      7,8,9,10,11,12,
-                    ].map(
+                    {[1,2,3,4,5,6,7,8,9,10,11,12].map(
                       (
                         item
                       ) => (
@@ -404,7 +384,6 @@ const AddStudent = () => {
                   </select>
                 </div>
 
-                {/* Section */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -413,23 +392,19 @@ const AddStudent = () => {
 
                   <input
                     type="text"
+                    name="section"
                     required
                     value={
                       form.section
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        section:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     placeholder="Section A"
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   />
                 </div>
 
-                {/* Year */}
                 <div>
 
                   <label className="font-semibold text-sm">
@@ -437,16 +412,13 @@ const AddStudent = () => {
                   </label>
 
                   <select
+                    name="admissionYear"
                     required
                     value={
                       form.admissionYear
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        admissionYear:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
                   >
@@ -455,13 +427,7 @@ const AddStudent = () => {
                       Select Year
                     </option>
 
-                    {[
-                      2022,
-                      2023,
-                      2024,
-                      2025,
-                      2026,
-                    ].map(
+                    {[2022,2023,2024,2025,2026].map(
                       (
                         year
                       ) => (
@@ -494,150 +460,96 @@ const AddStudent = () => {
                   <h1 className="text-2xl font-black">
                     Parent Information
                   </h1>
-
-                  <p className="text-gray-500 text-sm mt-1">
-                    Parent and guardian details
-                  </p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 mt-8">
 
-                {/* Parent Name */}
-                <div>
+                <input
+                  type="text"
+                  name="parentName"
+                  required
+                  value={
+                    form.parentName
+                  }
+                  onChange={
+                    handleChange
+                  }
+                  placeholder="Parent Name"
+                  className="border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+                />
 
-                  <label className="font-semibold text-sm">
-                    Parent Name
-                  </label>
+                <select
+                  name="relation"
+                  required
+                  value={
+                    form.relation
+                  }
+                  onChange={
+                    handleChange
+                  }
+                  className="border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+                >
 
-                  <input
-                    type="text"
-                    required
-                    value={
-                      form.parentName
-                    }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        parentName:
-                          e.target.value,
-                      })
-                    }
-                    placeholder="Parent Name"
-                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
-                  />
-                </div>
+                  <option value="">
+                    Select Relation
+                  </option>
 
-                {/* Relation */}
-                <div>
+                  <option>
+                    Father
+                  </option>
 
-                  <label className="font-semibold text-sm">
-                    Relation
-                  </label>
+                  <option>
+                    Mother
+                  </option>
 
-                  <select
-                    required
-                    value={
-                      form.relation
-                    }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        relation:
-                          e.target.value,
-                      })
-                    }
-                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
-                  >
+                  <option>
+                    Guardian
+                  </option>
+                </select>
 
-                    <option value="">
-                      Select Relation
-                    </option>
+                <input
+                  type="text"
+                  name="parentPhone"
+                  required
+                  pattern="[0-9]{10}"
+                  value={
+                    form.parentPhone
+                  }
+                  onChange={
+                    handleChange
+                  }
+                  placeholder="9876543210"
+                  className="border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+                />
 
-                    <option>
-                      Father
-                    </option>
+                <input
+                  type="text"
+                  name="alternativePhone"
+                  pattern="[0-9]{10}"
+                  value={
+                    form.alternativePhone
+                  }
+                  onChange={
+                    handleChange
+                  }
+                  placeholder="Alternative Number"
+                  className="border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
+                />
 
-                    <option>
-                      Mother
-                    </option>
-
-                    <option>
-                      Guardian
-                    </option>
-                  </select>
-                </div>
-
-                {/* Parent Phone */}
-                <div>
-
-                  <label className="font-semibold text-sm">
-                    Parent Phone
-                  </label>
-
-                  <input
-                    type="text"
-                    required
-                    value={
-                      form.parentPhone
-                    }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        parentPhone:
-                          e.target.value,
-                      })
-                    }
-                    placeholder="+91 9876543210"
-                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
-                  />
-                </div>
-
-                {/* Alternative */}
-                <div>
-
-                  <label className="font-semibold text-sm">
-                    Alternative Phone
-                  </label>
-
-                  <input
-                    type="text"
-                    value={
-                      form.alternativePhone
-                    }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        alternativePhone:
-                          e.target.value,
-                      })
-                    }
-                    placeholder="+91 9876543210"
-                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
-                  />
-                </div>
-
-                {/* Email */}
                 <div className="md:col-span-2">
-
-                  <label className="font-semibold text-sm">
-                    Parent Email
-                  </label>
 
                   <input
                     type="email"
+                    name="parentEmail"
                     value={
                       form.parentEmail
                     }
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        parentEmail:
-                          e.target.value,
-                      })
+                    onChange={
+                      handleChange
                     }
                     placeholder="parent@gmail.com"
-                    className="w-full border rounded-2xl px-5 py-4 mt-2 outline-none focus:border-blue-500"
+                    className="w-full border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -658,32 +570,22 @@ const AddStudent = () => {
                   <h1 className="text-2xl font-black">
                     Address Information
                   </h1>
-
-                  <p className="text-gray-500 text-sm mt-1">
-                    Residential address details
-                  </p>
                 </div>
               </div>
 
-              <div className="mt-8">
-
-                <textarea
-                  rows="5"
-                  required
-                  value={
-                    form.address
-                  }
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      address:
-                        e.target.value,
-                    })
-                  }
-                  placeholder="Residential Address"
-                  className="w-full border rounded-2xl px-5 py-4 outline-none focus:border-blue-500"
-                ></textarea>
-              </div>
+              <textarea
+                rows="5"
+                name="address"
+                required
+                value={
+                  form.address
+                }
+                onChange={
+                  handleChange
+                }
+                placeholder="Residential Address"
+                className="w-full border rounded-2xl px-5 py-4 mt-8 outline-none focus:border-blue-500"
+              ></textarea>
             </div>
 
             {/* Privacy */}
@@ -698,10 +600,8 @@ const AddStudent = () => {
                 </h1>
 
                 <p className="text-sm text-blue-600 mt-2 leading-7">
-                  All student information
-                  is securely stored and
-                  only accessible by
-                  authorized administration.
+                  Student data is protected
+                  and securely stored.
                 </p>
               </div>
             </div>

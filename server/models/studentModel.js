@@ -5,59 +5,96 @@ const studentSchema =
     {
       fullName: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Full Name is required",
+        ],
+        trim: true,
       },
 
       dateOfBirth: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Date Of Birth is required",
+        ],
       },
 
       gender: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Gender is required",
+        ],
       },
 
       rollNumber: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Roll Number is required",
+        ],
         unique: true,
+        trim: true,
       },
 
       admissionNumber: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Admission Number is required",
+        ],
         unique: true,
+        trim: true,
       },
 
       admissionYear: {
         type: Number,
-        required: true,
+        required: [
+          true,
+          "Admission Year is required",
+        ],
       },
 
       grade: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Grade is required",
+        ],
       },
 
       section: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Section is required",
+        ],
       },
 
       parentName: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Parent Name is required",
+        ],
+        trim: true,
       },
 
       relation: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Relation is required",
+        ],
       },
 
       parentPhone: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Parent Phone is required",
+        ],
       },
 
       alternativePhone: {
@@ -66,11 +103,26 @@ const studentSchema =
 
       parentEmail: {
         type: String,
+
+        validate: {
+          validator: function (v) {
+
+            if (!v) return true;
+
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+          },
+
+          message:
+            "Invalid Email Format",
+        },
       },
 
       address: {
         type: String,
-        required: true,
+        required: [
+          true,
+          "Address is required",
+        ],
       },
 
       attendance: {
@@ -85,10 +137,12 @@ const studentSchema =
 
       image: {
         type: String,
+
         default:
           "https://i.pravatar.cc/300",
       },
     },
+
     {
       timestamps: true,
     }
